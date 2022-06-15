@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">DiceRoller</string>
+    <string name="button">굴리기</string>
+    <string name="text">1!</string>
+    <string name="test">1</string>
+    <string name="roll">Roll</string>
+</resources>
