@@ -1,56 +1,72 @@
 package com.example.diceroller
 
-// 임포트
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
+import android.widget.ImageView
 import android.widget.Toast
+/**
+* This activity allows the user to roll a dice and view the result
+* on the screen.
+*/
 
 class MainActivity : AppCompatActivity() {
-    // 나 앱 실행할꺼야!
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        /**버튼과 텍트뷰.kt
-         * 24번줄 activity의 id = button과 연결한다.
-         * 25번줄 setOnClickListener 버튼을 눌렀을때 동작하는 것 같은 코드.
-         * 26번줄  toast메시지를 출력하자.
-         * 28번줄 activity의 id = textview랑 연결한다.
-         * 29번줄 6이라는 숫자를 화면에 보여줘라.
-         * 30번줄 rollDice함수 -->34번째 함수 연결
-         * **/
+    /**
+     * This method is called when the Activity is created.
+     */
+
+    override fun onCreate(savedInstanceState: Bundle?) { // 시작하기.
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main) // activity 로부터 받아온다.\
+
+        // Find the Button in the layout
         val rollButton: Button = findViewById(R.id.button)
-        rollButton.setOnClickListener {
-            val toast = Toast.makeText(this, "주사위를 굴렸어요.!", Toast.LENGTH_SHORT)
-            toast.show()
-            val resultTextView: TextView = findViewById(R.id.textView)
-            resultTextView.text = "6"
-            rollDice()
-        }
+        rollButton.setOnClickListener { rollDice() // Set a click listener on the button to roll the dice when the user taps the button
+            val toast = Toast.makeText(this, " 주사위를 굴렸어요.", Toast.LENGTH_SHORT)
+            toast.show() }
+        // Do a dice roll when the app starts
+        rollDice()
     }
 
     /**
-     * 1. 주사위.kt
-     * 2. 6 숫자를 dice함수에 넣기 ?
-     * 3.  넣은 것을 다시 roll함수에 넣기 ?
-     * 4.  textview를 봐꿔서 보여줘라.
-     * 5.  diceroll은 문자열이다.
-     * **/
+     * Roll the dice and update the screen with the result.
+     */
     private fun rollDice() {
+        // Create new Dice object with 6 sides and roll it
         val dice = Dice(6)
         val diceRoll = dice.roll()
-        val resultTextView: TextView = findViewById(R.id.textView)
-        resultTextView.text = diceRoll.toString()
-    }
-/**
- * Dice 클래스 메소드.kt
- * dice int로 변경.
- * 랜덤 1~ numsides (1~6까지 랜덤값을 보여줘라.
- * **/
-    class Dice(private val numSides: Int) {
 
+        // Find the ImageView in the layout
+        val diceImage: ImageView = findViewById(R.id.imageView)
+
+        // Determine which drawable resource ID to use based on the dice roll
+        val drawableResource = when (diceRoll) {
+
+            1 -> R.drawable.dice_1
+            2 -> R.drawable.dice_2
+            3 -> R.drawable.dice_3
+            4 -> R.drawable.dice_4
+            5 -> R.drawable.dice_5
+            else -> R.drawable.dice_6
+        }
+
+        // Update the ImageView with the correct drawable resource ID
+        diceImage.setImageResource(drawableResource as Int)
+
+        // Update the content description
+        diceImage.contentDescription = diceRoll.toString()
+
+        /**
+         * Dice with a fixed number of sides.
+         */
+
+    }
+    class Dice(private val numSides: Int) {
+        /**
+         * Do a random dice roll and return the result.
+         */
         fun roll(): Int {
             return (1..numSides).random()
         }
